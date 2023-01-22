@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebase, { auth, database, disconnect } from "../config/firebase";
+import { auth, database, disconnect } from "../config/firebase";
 import { Layout, Button, Card } from 'antd';
 import './Dashboard.css';
 import coinIcons, { getIcon } from '../icons/Icons'
@@ -8,14 +8,14 @@ import { collection, getDocs, query, where, orderBy, limit } from "firebase/fire
 
 function Home() {
   const [username, setUsername] = useState('');
-  const { Header, Content } = Layout;
+  const { Header } = Layout;
   const [data, setData] = useState([]);
 
   useEffect(() => {
     auth.onAuthStateChanged(user => {
       setUsername(user.email);
     });
-  }, [firebase]);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,7 +47,7 @@ function Home() {
           <Button style={{visibility: 'hidden'}} className="dashboard" href='/dashboard'>Dashboard</Button>
         </div>
         <div className="header-center">
-          <Button display={false} className="update" href='/api'>Mettre à jour</Button>
+          <Button className="update" href='/api'>Mettre à jour</Button>
         </div>
         <div className="header-right">
           <div className="right-elements">
@@ -58,7 +58,7 @@ function Home() {
       </Header>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {data.map((item, index) => (
-          <Card hoverable onClick={() => handleCoinStats(item)} key={index} title={item.name + ' - ' + item.price + ' $'} style={{ width: 100, width: 170, margin: '10px' }}>
+          <Card hoverable onClick={() => handleCoinStats(item)} key={index} title={item.name + ' - ' + item.price + ' $'} style={{ width: 170, margin: '10px' }}>
             <img src={getIcon(item.name)} alt="icon" style={{ width: '100%' }} />
           </Card>
         ))}

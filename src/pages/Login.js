@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router';
 import { auth } from "../config/firebase";
 import './Firebase.css';
+import { message } from 'antd';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -35,7 +36,8 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorCode, errorMessage)
+          setError(errorMessage);
+          message.error(errorMessage);
         });
     })
   }

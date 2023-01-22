@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom'
 import { auth } from "../config/firebase";
 import './Firebase.css';
+import { message } from 'antd';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,7 @@ const Signup = () => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   useEffect(() => {
+
     auth.onAuthStateChanged((user) => {
       if (user) {
         window.location.pathname = '/'
@@ -51,7 +53,8 @@ const Signup = () => {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
+            setError(errorMessage);
+            message.error(errorMessage);
           });
       }
     })

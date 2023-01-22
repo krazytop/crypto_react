@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import firebase, { auth, database, disconnect } from "../config/firebase";
+import { auth, database, disconnect } from "../config/firebase";
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Layout, Button, Card } from 'antd';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { Layout, Button } from 'antd';
 
 function Coin() {
     const [data, setData] = useState([]);
     const [username, setUsername] = useState('');
-    const { Header, Content } = Layout;
+    const { Header } = Layout;
 
     useEffect(() => {
         auth.onAuthStateChanged(user => {
             setUsername(user.email);
         });
-    }, [firebase]);
+    }, []);
 
     const handleLogout = () => {
         disconnect(auth);
@@ -26,10 +26,11 @@ function Coin() {
             const cryptoDocs = await getDocs(query(collection(database, 'crypto'), where("name", "==", window.location.pathname.replace('/coin/', '')), orderBy('time', "desc"), limit(100)));
             cryptoDocs.forEach(doc => {
                 cryptoData.push(doc.data());
-                setData(cryptoData);
             });
+            setData(cryptoData.reverse());
         }
         fetchData();
+
     }, []);
 
     return (
